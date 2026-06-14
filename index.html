@@ -147,22 +147,22 @@
                 grid.innerHTML = '<div class="empty-state error-msg"><h3>🚨 데이터를 불러오지 못했습니다!</h3><p>GAS 에러: ' + error.message + '</p></div>';
             }).getListData();
         } else {
-            // GitHub Pages 등 일반 웹 호스팅 환경 (list5.json 파일 로드)
-            console.log("구글 환경이 아님. 로컬/GitHub의 list5.json 파일을 불러옵니다.");
-            fetch('list5.json')
+            // GitHub Pages 등 일반 웹 호스팅 환경 (list6.json 파일 로드)
+            console.log("구글 환경이 아님. 로컬/GitHub의 list6.json 파일을 불러옵니다.");
+            fetch('list6.json')
                 .then(response => {
                     if (!response.ok) throw new Error("HTTP 오류: " + response.status);
                     return response.json();
                 })
                 .then(data => {
-                    console.log("2. list5.json 데이터 다운로드 성공!");
+                    console.log("2. list6.json 데이터 다운로드 성공!");
                     restaurants = data;
                     renderCards(restaurants);
                     initKakaoMap(restaurants);
                 })
                 .catch(error => {
                     console.log("Fetch 통신 에러 발생:", error);
-                    grid.innerHTML = '<div class="empty-state error-msg"><h3>🚨 데이터를 불러오지 못했습니다!</h3><p>에러: ' + error.message + '<br>GitHub에 list5.json 파일이 정상적으로 올라가 있는지 확인해주세요.</p></div>';
+                    grid.innerHTML = '<div class="empty-state error-msg"><h3>🚨 데이터를 불러오지 못했습니다!</h3><p>에러: ' + error.message + '<br>GitHub에 list6.json 파일이 정상적으로 올라가 있는지 확인해주세요.</p></div>';
                 });
         }
 
@@ -309,6 +309,17 @@
                 htmlString += '<div class="stat-item">🚶 도보<b>' + walkTime + '</b></div>';
                 htmlString += '</div>';
                 
+                // 🍽️ 메뉴 데이터 렌더링
+                let topMenus = item.top_menus || ["메뉴 정보 없음"];
+                let menuHtml = '<div style="background:#f0f5ff; padding:12px 16px; border-radius:10px; margin-bottom:16px;">';
+                menuHtml += '<div style="font-size:0.85rem; font-weight:800; color:#0b5fff; margin-bottom:8px;">✨ 추천 메뉴</div>';
+                menuHtml += '<ul style="margin:0; padding-left:20px; font-size:0.9rem; color:#333; line-height:1.4;">';
+                topMenus.forEach(m => {
+                    menuHtml += '<li style="margin-bottom:4px;">' + m + '</li>';
+                });
+                menuHtml += '</ul></div>';
+                htmlString += menuHtml;
+
                 htmlString += '<p class="card-location">📍 ' + (item.address || '주소 정보 없음') + '</p>';
                 htmlString += '<a href="' + searchUrl + '" target="_blank" class="map-btn">네이버 지도로 상세 보기</a>';
                 
